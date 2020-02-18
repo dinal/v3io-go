@@ -1336,6 +1336,9 @@ func (c *context) getItemsParseCAPNPResponse(response *v3io.Response, withWildca
 		if err != nil {
 			return nil, errors.Wrap(err, "item.Attrs")
 		}
+		if len(valuesSections) > 1 && valuesSections[1].data.Len() == 0 {
+			c.getItemsParseCAPNPResponse(response, withWildcard)
+		}
 		ditem, err := decodeCapnpAttributes(itemAttributes, valuesSections, attributeNames, c.logger)
 		if err != nil {
 			return nil, errors.Wrap(err, "decodeCapnpAttributes")
