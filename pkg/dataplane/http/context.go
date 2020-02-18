@@ -8,9 +8,11 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
+	"os"
 	"path"
 	"reflect"
 	"regexp"
@@ -1249,6 +1251,8 @@ func (c *context) getItemsParseJSONResponse(response *v3io.Response, getItemsInp
 
 func (c *context) getItemsParseCAPNPResponse(response *v3io.Response, withWildcard bool) (*v3io.GetItemsOutput, error) {
 	responseBodyReader := bytes.NewReader(response.Body())
+	os.Remove("/tmp/body")
+	ioutil.WriteFile("/tmp/body", response.Body(), 0644)
 	capnpSections := readAllCapnpMessages(responseBodyReader)
 	if len(capnpSections) < 2 {
 		return nil, errors.Errorf("getItemsCapnp: Got only %v capnp sections. Expecting at least 2", len(capnpSections))
