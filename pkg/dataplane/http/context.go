@@ -1166,6 +1166,9 @@ func decodeCapnpAttributes(keyValues node_common_capnp.VnObjectItemsGetMappedKey
 		attributeName := attributeNames[attrIdx]
 		sectIdx, valIdx := getSectionAndIndex(values, valIdx, logger2)
 		logger2.Info("sectIdx ", sectIdx, " valIdx", valIdx, " values[sectIdx].data.Len()", values[sectIdx].data.Len(), " attrIdx ",attrIdx, " attributeName ", attributeName)
+		if values[sectIdx].data.Len() == 0 {
+			logger2.Info("data 0")
+		}
 		value, err := values[sectIdx].data.At(valIdx).Value()
 		if err != nil {
 			return attributes, errors.Wrapf(err, "values[%d].data.At(%d).Value", sectIdx, valIdx)
