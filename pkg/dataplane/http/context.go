@@ -8,6 +8,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
@@ -1360,6 +1361,7 @@ func (c *context) getItemsParseJSONResponse(response *v3io.Response, getItemsInp
 
 func (c *context) getItemsParseCAPNPResponse(response *v3io.Response, withWildcard bool) (*v3io.GetItemsOutput, error) {
 	responseBodyReader := bytes.NewReader(response.Body())
+	_ = ioutil.WriteFile("/tmp/data", response.Body(), 0644)
 	capnpSections := readAllCapnpMessages(responseBodyReader)
 	if len(capnpSections) < 2 {
 		return nil, errors.Errorf("getItemsCapnp: Got only %v capnp sections. Expecting at least 2", len(capnpSections))
